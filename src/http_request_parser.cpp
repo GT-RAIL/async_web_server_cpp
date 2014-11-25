@@ -8,9 +8,9 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include "cpp_web_server/http_request_parser.hpp"
+#include "async_web_server_cpp/http_request_parser.hpp"
 
-namespace cpp_web_server
+namespace async_web_server_cpp
 {
 HttpRequestParser::HttpRequestParser()
     : state_(method_start)

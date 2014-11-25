@@ -1,7 +1,7 @@
 #include <boost/regex.hpp>
-#include "cpp_web_server/http_request_handler.hpp"
+#include "async_web_server_cpp/http_request_handler.hpp"
 
-namespace cpp_web_server
+namespace async_web_server_cpp
 {
 
 HttpRequestHandlerGroup::HttpRequestHandlerGroup(HttpServerRequestHandler default_handler)

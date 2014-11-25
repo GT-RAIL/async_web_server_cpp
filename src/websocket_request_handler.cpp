@@ -4,11 +4,11 @@
 #include <openssl/evp.h>
 #include <openssl/bio.h>
 #include <openssl/buffer.h>
-#include "cpp_web_server/websocket_request_handler.hpp"
-#include "cpp_web_server/websocket_connection.hpp"
-#include "cpp_web_server/http_reply.hpp"
+#include "async_web_server_cpp/websocket_request_handler.hpp"
+#include "async_web_server_cpp/websocket_connection.hpp"
+#include "async_web_server_cpp/http_reply.hpp"
 
-namespace cpp_web_server
+namespace async_web_server_cpp
 {
 
 const std::string WebsocketHttpRequestHandler::KEY_MAGIC_STRING = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
@@ -43,7 +43,7 @@ void WebsocketHttpRequestHandler::operator()(const HttpRequest &request, boost::
     BIO_free_all(b64);
 
 
-    cpp_web_server::HttpReply::builder(cpp_web_server::HttpReply::switching_protocols)
+    async_web_server_cpp::HttpReply::builder(async_web_server_cpp::HttpReply::switching_protocols)
       .header("Upgrade", "websocket")
       .header("Connection", "Upgrade")
       .header("Sec-WebSocket-Version", "13")
@@ -56,7 +56,7 @@ void WebsocketHttpRequestHandler::operator()(const HttpRequest &request, boost::
     websocket_connection->handle_read(begin, end);
   }
   else {
-    cpp_web_server::HttpReply::stock_reply(cpp_web_server::HttpReply::bad_request)(request, connection, begin, end);
+    async_web_server_cpp::HttpReply::stock_reply(async_web_server_cpp::HttpReply::bad_request)(request, connection, begin, end);
   }
 }
 

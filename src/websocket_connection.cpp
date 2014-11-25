@@ -1,9 +1,9 @@
 #include <boost/bind.hpp>
 #include <boost/make_shared.hpp>
 #include <limits>
-#include "cpp_web_server/websocket_connection.hpp"
+#include "async_web_server_cpp/websocket_connection.hpp"
 
-namespace cpp_web_server
+namespace async_web_server_cpp
 {
 
 WebsocketConnection::WebsocketConnection(HttpConnectionPtr connection)
@@ -14,14 +14,14 @@ void WebsocketConnection::set_message_handler(MessageHandler& handler) {
 }
 
 bool WebsocketConnection::sendTextMessage(const std::string& content) {
-  cpp_web_server::WebsocketMessage m;
-  m.type = cpp_web_server::WebsocketMessage::type_text;
+  async_web_server_cpp::WebsocketMessage m;
+  m.type = async_web_server_cpp::WebsocketMessage::type_text;
   m.content = content;
   return sendMessage(m);
 }
 bool WebsocketConnection::sendPingMessage(const std::string& content) {
-  cpp_web_server::WebsocketMessage m;
-  m.type = cpp_web_server::WebsocketMessage::type_ping;
+  async_web_server_cpp::WebsocketMessage m;
+  m.type = async_web_server_cpp::WebsocketMessage::type_ping;
   m.content = content;
   return sendMessage(m);
 }

@@ -3,9 +3,9 @@
 
 #include <boost/function.hpp>
 #include <boost/shared_ptr.hpp>
-#include "cpp_web_server/http_request.hpp"
+#include "async_web_server_cpp/http_request.hpp"
 
-namespace cpp_web_server
+namespace async_web_server_cpp
 {
 
 class HttpConnection;

@@ -1,6 +1,6 @@
-#include "cpp_web_server/websocket_message.hpp"
+#include "async_web_server_cpp/websocket_message.hpp"
 
-namespace cpp_web_server
+namespace async_web_server_cpp
 {
 
 bool WebsocketFrame::fromMessage(const WebsocketMessage& message){

@@ -6,7 +6,7 @@
 #include <boost/logic/tribool.hpp>
 #include <boost/tuple/tuple.hpp>
 
-namespace cpp_web_server
+namespace async_web_server_cpp
 {
 
 class WebsocketMessage;

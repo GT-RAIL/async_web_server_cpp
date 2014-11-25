@@ -3,10 +3,10 @@
 
 #include <boost/function.hpp>
 #include <boost/shared_ptr.hpp>
-#include "cpp_web_server/http_request_handler.hpp"
-#include "cpp_web_server/websocket_connection.hpp"
+#include "async_web_server_cpp/http_request_handler.hpp"
+#include "async_web_server_cpp/websocket_connection.hpp"
 
-namespace cpp_web_server
+namespace async_web_server_cpp
 {
 
 class WebsocketConnection;

@@ -9,10 +9,10 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/thread/thread.hpp>
 
-#include "cpp_web_server/http_request_handler.hpp"
-#include "cpp_web_server/http_connection.hpp"
+#include "async_web_server_cpp/http_request_handler.hpp"
+#include "async_web_server_cpp/http_connection.hpp"
 
-namespace cpp_web_server
+namespace async_web_server_cpp
 {
 
 class HttpServer : private boost::noncopyable

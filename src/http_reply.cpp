@@ -11,9 +11,9 @@
 
 #include <boost/lexical_cast.hpp>
 #include <fstream>
-#include "cpp_web_server/http_reply.hpp"
+#include "async_web_server_cpp/http_reply.hpp"
 
-namespace cpp_web_server
+namespace async_web_server_cpp
 {
 
 namespace status_strings

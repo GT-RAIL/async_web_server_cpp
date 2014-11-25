@@ -1,7 +1,7 @@
-#include "cpp_web_server/http_server.hpp"
-#include "cpp_web_server/http_reply.hpp"
+#include "async_web_server_cpp/http_server.hpp"
+#include "async_web_server_cpp/http_reply.hpp"
 
-namespace cpp_web_server
+namespace async_web_server_cpp
 {
 
 HttpServer::HttpServer(const std::string &address, const std::string &port,

@@ -1,9 +1,9 @@
 #include <boost/regex.hpp>
 #include <boost/foreach.hpp>
 #include <boost/algorithm/string.hpp>
-#include "cpp_web_server/http_request.hpp"
+#include "async_web_server_cpp/http_request.hpp"
 
-namespace cpp_web_server
+namespace async_web_server_cpp
 {
 
 static boost::regex uri_regex("(.*?)(?:\\?(.*?))?");
@@ -48,7 +48,7 @@ bool HttpRequest::parse_uri()
 
 bool HttpRequest::has_header(const std::string &name) const
 {
-  typedef std::vector<cpp_web_server::HttpHeader> HeaderList;
+  typedef std::vector<async_web_server_cpp::HttpHeader> HeaderList;
   for(HeaderList::const_iterator itr = headers.begin(); itr != headers.end(); ++itr) {
     if(itr->name.compare(name) == 0)
       return false;
@@ -58,7 +58,7 @@ bool HttpRequest::has_header(const std::string &name) const
 std::string HttpRequest::get_header_value_or_default(const std::string &name,
     const std::string &default_value) const
 {
-  typedef std::vector<cpp_web_server::HttpHeader> HeaderList;
+  typedef std::vector<async_web_server_cpp::HttpHeader> HeaderList;
   for(HeaderList::const_iterator itr = headers.begin(); itr != headers.end(); ++itr) {
     if(itr->name.compare(name) == 0)
       return itr->value;

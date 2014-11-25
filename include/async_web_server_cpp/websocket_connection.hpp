@@ -6,10 +6,10 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/thread/mutex.hpp>
-#include "cpp_web_server/http_connection.hpp"
-#include "cpp_web_server/websocket_message.hpp"
+#include "async_web_server_cpp/http_connection.hpp"
+#include "async_web_server_cpp/websocket_message.hpp"
 
-namespace cpp_web_server
+namespace async_web_server_cpp
 {
 
 class WebsocketHttpRequestHandler;

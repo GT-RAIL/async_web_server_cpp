@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(cpp_web_server)
+project(async_web_server_cpp)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -12,7 +12,7 @@ find_package(OpenSSL)
 
 catkin_package(
  INCLUDE_DIRS include
- LIBRARIES cpp_web_server
+ LIBRARIES async_web_server_cpp
  DEPENDS Boost
 )
 
@@ -26,12 +26,12 @@ include_directories(
   ${OPENSSL_INCLUDE_DIRS}
 )
 
-add_library(cpp_web_server src/http_server.cpp
+add_library(async_web_server_cpp src/http_server.cpp
   src/http_connection.cpp src/http_request_parser.cpp
   src/http_reply.cpp src/http_request_handler.cpp
   src/websocket_connection.cpp src/websocket_request_handler.cpp
   src/websocket_message.cpp src/http_request.cpp)
-target_link_libraries(cpp_web_server
+target_link_libraries(async_web_server_cpp
   ${OPENSSL_LIBRARIES}
   ${Boost_LIBRARIES}
 )
@@ -42,7 +42,7 @@ target_link_libraries(cpp_web_server
 
 
 ## Mark executables and/or libraries for installation
-install(TARGETS cpp_web_server
+install(TARGETS async_web_server_cpp
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -59,7 +59,7 @@ install(DIRECTORY include/${PROJECT_NAME}/
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_cpp_web_server.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_async_web_server_cpp.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

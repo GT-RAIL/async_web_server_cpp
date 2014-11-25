@@ -1,8 +1,8 @@
 #include <boost/bind.hpp>
 #include <boost/make_shared.hpp>
-#include "cpp_web_server/http_reply.hpp"
+#include "async_web_server_cpp/http_reply.hpp"
 
-namespace cpp_web_server
+namespace async_web_server_cpp
 {
 
 HttpConnection::HttpConnection(boost::asio::io_service &io_service,

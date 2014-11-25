@@ -6,11 +6,11 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/thread/mutex.hpp>
-#include "cpp_web_server/http_request_handler.hpp"
-#include "cpp_web_server/http_request.hpp"
-#include "cpp_web_server/http_request_parser.hpp"
+#include "async_web_server_cpp/http_request_handler.hpp"
+#include "async_web_server_cpp/http_request.hpp"
+#include "async_web_server_cpp/http_request_parser.hpp"
 
-namespace cpp_web_server
+namespace async_web_server_cpp
 {
 
 class HttpConnection;
