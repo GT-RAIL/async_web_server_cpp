@@ -13,6 +13,9 @@ class WebsocketConnection;
 
 typedef boost::function<WebsocketConnection::MessageHandler(const HttpRequest &, boost::shared_ptr<WebsocketConnection>)> WebsocketRequestHandler;
 
+/**
+ * A HTTP request handler that upgrades a HttpConnection to a WebsocketConnection.
+ */
 class WebsocketHttpRequestHandler
 {
 public:

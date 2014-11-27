@@ -17,8 +17,19 @@ class HttpConnection;
 typedef boost::shared_ptr<HttpConnection> HttpConnectionPtr;
 typedef boost::weak_ptr<HttpConnection> HttpConnectionWeakPtr;
 
-// Represents a connection to a client
-// To keep the connection alive keep a shared pointer to this object
+/**
+ *  Represents a connection to a client
+ * The connection to the client is maintained as long as there is a shared
+ * pointer to the connection object. If supplying the response is simple then
+ * it can be done in the request handler callback from the server. However,
+ * if the response will take time to generate or must be supplied over a long
+ * period of time then a shared_ptr to the connection can be held and used
+ * later. While reading and writing from multiple threads is supported, care
+ * should be taken to ensure that proper external synchronization is done as
+ * needed. For example, while write can be called from two threads, if two
+ * calls to write need to be unseperated then calls to write should be locked
+ * to prevent interleaving of different write calls.
+ */
 class HttpConnection : public boost::enable_shared_from_this<HttpConnection>,
   private boost::noncopyable
 {
@@ -31,11 +42,19 @@ public:
 
   boost::asio::ip::tcp::socket &socket();
 
-  // Start async operation to read request
+  /**
+   * Start async operation to read request (normally called by server)
+   */
   void start();
 
+  /**
+   * Perform an async read
+   */
   void async_read(ReadHandler callback);
 
+  /**
+   * Write the given bytes to the socket and clear the vector
+   */
   void write_and_clear(std::vector<unsigned char> &data);
 
   void write(const std::string &);

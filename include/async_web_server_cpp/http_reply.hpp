@@ -13,7 +13,9 @@ namespace async_web_server_cpp
 
 class ReplyBuilder;
 
-// Utility methods for constructing replys
+/**
+ *  Utility methods for constructing replys
+ */
 struct HttpReply
 {
   enum status_type
@@ -52,8 +54,9 @@ struct HttpReply
   static ReplyBuilder builder(status_type status);
 };
 
-
-// Object to build and send a reply
+/**
+ * Object to build and send a reply
+ */
 class ReplyBuilder
 {
 public:
@@ -73,7 +76,9 @@ private:
 };
 
 
-// Request Handler that serves a a predefined response
+/**
+ *  Request Handler that serves a a predefined response
+ */
 class StaticHttpRequestHandler
 {
 public:

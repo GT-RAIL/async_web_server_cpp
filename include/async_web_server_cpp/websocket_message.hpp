@@ -11,7 +11,9 @@ namespace async_web_server_cpp
 
 class WebsocketMessage;
 
-
+/**
+ * An single websocket frame and associated header
+ */
 class WebsocketFrame
 {
 public:
@@ -89,6 +91,10 @@ private:
 
 };
 
+/**
+ * A websocket message that in potentially constructed from/destructed to
+ * a WebsocketFrame.
+ */
 class WebsocketMessage
 {
 public:

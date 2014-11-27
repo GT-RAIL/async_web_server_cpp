@@ -6,6 +6,9 @@
 namespace async_web_server_cpp
 {
 
+/**
+ * Represents a HTTP header in a request or response
+ */
 struct HttpHeader
 {
   HttpHeader()

@@ -12,6 +12,11 @@ class HttpConnection;
 
 typedef boost::function<void(const HttpRequest &, boost::shared_ptr<HttpConnection>, const char* begin, const char* end)> HttpServerRequestHandler;
 
+/**
+ * A hander that can dispatch to a request to different handlers depending on a
+ * predicate. If none of registered handlers satisfy the request then the
+ * default request handler is used.
+ */
 class HttpRequestHandlerGroup
 {
 public:

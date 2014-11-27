@@ -10,6 +10,9 @@
 namespace async_web_server_cpp
 {
 
+/**
+ * Represents a request from a browser
+ */
 struct HttpRequest
 {
   std::string method;

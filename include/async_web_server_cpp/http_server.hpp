@@ -15,6 +15,12 @@
 namespace async_web_server_cpp
 {
 
+/**
+ * @class HttpServer
+ * The HttpServer is an implementation of a HTTP server that serves http request from a given port
+ * The server maintains a pool of threads to use to serve requests. Each request is dispatched to
+ * the given request handler to be handled.
+ */
 class HttpServer : private boost::noncopyable
 {
 public:
