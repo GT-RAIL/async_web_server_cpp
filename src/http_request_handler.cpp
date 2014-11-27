@@ -5,7 +5,7 @@ namespace async_web_server_cpp
 {
 
 HttpRequestHandlerGroup::HttpRequestHandlerGroup(HttpServerRequestHandler default_handler)
-    : default_handler_(default_handler)
+  : default_handler_(default_handler)
 {
 }
 
@@ -13,7 +13,7 @@ class PathMatcher
 {
 public:
   explicit PathMatcher(const std::string &path_regex_string)
-      : path_regex_(boost::regex(path_regex_string))
+    : path_regex_(boost::regex(path_regex_string))
   {
   }
 

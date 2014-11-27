@@ -21,7 +21,7 @@ typedef boost::weak_ptr<WebsocketConnection> WebsocketConnectionWeakPtr;
 // Represents a connection to a client
 // To keep the connection alive keep a shared pointer to this object
 class WebsocketConnection : public boost::enable_shared_from_this<WebsocketConnection>,
-			    private boost::noncopyable
+  private boost::noncopyable
 {
 public:
   explicit WebsocketConnection(HttpConnectionPtr connection);

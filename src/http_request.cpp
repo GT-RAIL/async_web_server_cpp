@@ -20,22 +20,22 @@ bool HttpRequest::parse_uri()
 
       std::vector<std::string> pair_strings;
       boost::split(pair_strings, query, boost::is_any_of("&"));
-      BOOST_FOREACH(const std::string &pair_string, pair_strings)
-            {
-              std::vector<std::string> pair_data;
-              const int eq_index = pair_string.find_first_of('=');
-              if (eq_index == std::string::npos)
-              {
-                if (pair_string.size() > 0)
-                {
-                  query_params[pair_string] = "";
-                }
-              }
-              else
-              {
-                query_params[pair_string.substr(0, eq_index)] = pair_string.substr(eq_index + 1);
-              }
-            }
+      BOOST_FOREACH(const std::string & pair_string, pair_strings)
+      {
+        std::vector<std::string> pair_data;
+        const int eq_index = pair_string.find_first_of('=');
+        if (eq_index == std::string::npos)
+        {
+          if (pair_string.size() > 0)
+          {
+            query_params[pair_string] = "";
+          }
+        }
+        else
+        {
+          query_params[pair_string.substr(0, eq_index)] = pair_string.substr(eq_index + 1);
+        }
+      }
     }
     return true;
   }
@@ -49,8 +49,9 @@ bool HttpRequest::parse_uri()
 bool HttpRequest::has_header(const std::string &name) const
 {
   typedef std::vector<async_web_server_cpp::HttpHeader> HeaderList;
-  for(HeaderList::const_iterator itr = headers.begin(); itr != headers.end(); ++itr) {
-    if(itr->name.compare(name) == 0)
+  for (HeaderList::const_iterator itr = headers.begin(); itr != headers.end(); ++itr)
+  {
+    if (itr->name.compare(name) == 0)
       return false;
   }
   return true;
@@ -59,8 +60,9 @@ std::string HttpRequest::get_header_value_or_default(const std::string &name,
     const std::string &default_value) const
 {
   typedef std::vector<async_web_server_cpp::HttpHeader> HeaderList;
-  for(HeaderList::const_iterator itr = headers.begin(); itr != headers.end(); ++itr) {
-    if(itr->name.compare(name) == 0)
+  for (HeaderList::const_iterator itr = headers.begin(); itr != headers.end(); ++itr)
+  {
+    if (itr->name.compare(name) == 0)
       return itr->value;
   }
   return default_value;

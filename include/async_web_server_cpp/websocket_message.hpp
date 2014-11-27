@@ -12,10 +12,13 @@ namespace async_web_server_cpp
 class WebsocketMessage;
 
 
-class WebsocketFrame {
+class WebsocketFrame
+{
 public:
-  struct Header {
-    enum opcode {
+  struct Header
+  {
+    enum opcode
+    {
       opcode_continuation = 0,
       opcode_text = 1,
       opcode_binary = 2,
@@ -30,8 +33,9 @@ public:
 
     unsigned int len : 7;
     bool mask : 1;
-  } __attribute__ ((__packed__));
-  union {
+  } __attribute__((__packed__));
+  union
+  {
     Header header;
     char header_bytes[2];
   };
@@ -43,7 +47,8 @@ public:
   bool serialize(std::vector<unsigned char>& buffer);
 };
 
-class WebsocketFrameParser {
+class WebsocketFrameParser
+{
 public:
   WebsocketFrameParser();
   void reset();
@@ -63,7 +68,8 @@ public:
   }
 
 private:
-  enum state {
+  enum state
+  {
     header_byte1,
     header_byte2,
     length_8bytes_left,
@@ -83,10 +89,12 @@ private:
 
 };
 
-class WebsocketMessage {
+class WebsocketMessage
+{
 public:
   WebsocketMessage();
-  enum type {
+  enum type
+  {
     type_unknown,
     type_text,
     type_binary,
@@ -97,7 +105,8 @@ public:
   std::string content;
 };
 
-class WebsocketFrameBuffer {
+class WebsocketFrameBuffer
+{
 public:
   boost::tribool consume(WebsocketMessage& message, WebsocketFrame& frame);
 };

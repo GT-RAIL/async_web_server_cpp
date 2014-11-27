@@ -20,14 +20,14 @@ typedef boost::weak_ptr<HttpConnection> HttpConnectionWeakPtr;
 // Represents a connection to a client
 // To keep the connection alive keep a shared pointer to this object
 class HttpConnection : public boost::enable_shared_from_this<HttpConnection>,
-                       private boost::noncopyable
+  private boost::noncopyable
 {
 public:
   typedef boost::function<void(const char* begin, const char* end)> ReadHandler;
   typedef boost::shared_ptr<void> ResourcePtr;
 
   explicit HttpConnection(boost::asio::io_service &io_service,
-			  HttpServerRequestHandler request_handler);
+                          HttpServerRequestHandler request_handler);
 
   boost::asio::ip::tcp::socket &socket();
 
@@ -41,22 +41,22 @@ public:
   void write(const std::string &);
 
   void write(const boost::asio::const_buffer &buffer,
-      ResourcePtr resource);
+             ResourcePtr resource);
 
   void write(const std::vector<boost::asio::const_buffer> &buffer,
-      ResourcePtr resource);
+             ResourcePtr resource);
 
 private:
   void handle_read(const char* begin, const char* end);
   void handle_read_raw(ReadHandler callback,
-		       const boost::system::error_code &e,
-		       std::size_t bytes_transferred);
+                       const boost::system::error_code &e,
+                       std::size_t bytes_transferred);
 
   // Must be called while holding write lock
   void write_pending();
 
   void handle_write(const boost::system::error_code &e,
-      std::vector<boost::shared_ptr<void> > resources);
+                    std::vector<boost::shared_ptr<void> > resources);
 
   boost::asio::io_service::strand strand_;
   boost::asio::ip::tcp::socket socket_;

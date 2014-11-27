@@ -25,7 +25,7 @@ struct HttpRequest
   bool has_header(const std::string &name) const;
 
   std::string get_header_value_or_default(const std::string &name,
-      const std::string &default_value) const;
+                                          const std::string &default_value) const;
 
 
   bool has_query_param(const std::string &name) const;
@@ -35,7 +35,7 @@ struct HttpRequest
 
   template<typename T>
   T get_query_param_value_or_default(const std::string &name,
-      const T &default_value) const
+                                     const T &default_value) const
   {
     std::map<std::string, std::string>::const_iterator itr = query_params.find(name);
     if (itr != query_params.end())

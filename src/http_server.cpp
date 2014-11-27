@@ -5,8 +5,8 @@ namespace async_web_server_cpp
 {
 
 HttpServer::HttpServer(const std::string &address, const std::string &port,
-    HttpServerRequestHandler request_handler, std::size_t thread_pool_size)
-    : acceptor_(io_service_), thread_pool_size_(thread_pool_size), request_handler_(request_handler)
+                       HttpServerRequestHandler request_handler, std::size_t thread_pool_size)
+  : acceptor_(io_service_), thread_pool_size_(thread_pool_size), request_handler_(request_handler)
 {
 
   boost::asio::ip::tcp::resolver resolver(io_service_);
@@ -34,8 +34,8 @@ void HttpServer::start_accept()
 {
   new_connection_.reset(new HttpConnection(io_service_, request_handler_));
   acceptor_.async_accept(new_connection_->socket(),
-      boost::bind(&HttpServer::handle_accept, this,
-          boost::asio::placeholders::error));
+                         boost::bind(&HttpServer::handle_accept, this,
+                                     boost::asio::placeholders::error));
 }
 
 void HttpServer::handle_accept(const boost::system::error_code &e)

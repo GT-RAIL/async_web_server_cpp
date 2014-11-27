@@ -11,7 +11,7 @@ namespace async_web_server_cpp
 
 class WebsocketConnection;
 
-typedef boost::function<WebsocketConnection::MessageHandler (const HttpRequest &, boost::shared_ptr<WebsocketConnection>)> WebsocketRequestHandler;
+typedef boost::function<WebsocketConnection::MessageHandler(const HttpRequest &, boost::shared_ptr<WebsocketConnection>)> WebsocketRequestHandler;
 
 class WebsocketHttpRequestHandler
 {
