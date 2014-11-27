@@ -47,7 +47,7 @@ private:
   WebsocketFrameParser frame_parser_;
   WebsocketFrameBuffer frame_buffer_;
 
-  friend WebsocketHttpRequestHandler;
+  friend class WebsocketHttpRequestHandler;
 };
 
 }
