@@ -13,6 +13,9 @@ bool WebsocketFrame::fromMessage(const WebsocketMessage& message)
   case WebsocketMessage::type_binary:
     header.opcode = WebsocketFrame::Header::opcode_binary;
     break;
+  case WebsocketMessage::type_close:
+    header.opcode = WebsocketFrame::Header::opcode_close;
+    break;
   case WebsocketMessage::type_ping:
     header.opcode = WebsocketFrame::Header::opcode_ping;
     break;
@@ -222,6 +225,9 @@ boost::tribool WebsocketFrameBuffer::consume(WebsocketMessage& message, Websocke
       break;
     case WebsocketFrame::Header::opcode_binary:
       message.type = WebsocketMessage::type_binary;
+      break;
+    case WebsocketFrame::Header::opcode_close:
+      message.type = WebsocketMessage::type_close;
       break;
     case WebsocketFrame::Header::opcode_ping:
       message.type = WebsocketMessage::type_ping;

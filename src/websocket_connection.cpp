@@ -82,7 +82,8 @@ void WebsocketConnection::handle_read(const char* begin, const char* end)
       message_.type = WebsocketMessage::type_unknown;
     }
   }
-  connection_->async_read(boost::bind(&WebsocketConnection::static_handle_read, WebsocketConnectionWeakPtr(shared_from_this()), _1, _2));
+  WebsocketConnectionWeakPtr this_weak(shared_from_this());
+  connection_->async_read(boost::bind(&WebsocketConnection::static_handle_read, this_weak, _1, _2));
 }
 
 }
