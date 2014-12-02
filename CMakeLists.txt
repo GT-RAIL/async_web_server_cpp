@@ -10,6 +10,13 @@ find_package(catkin REQUIRED)
 find_package(Boost REQUIRED COMPONENTS thread system regex)
 find_package(OpenSSL)
 
+###################################################
+## Declare things to be passed to other projects ##
+###################################################
+
+## LIBRARIES: libraries you create in this project that dependent projects also need
+## CATKIN_DEPENDS: catkin_packages dependent projects also need
+## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
  INCLUDE_DIRS include
  LIBRARIES ${PROJECT_NAME}
@@ -20,6 +27,7 @@ catkin_package(
 ## Build ##
 ###########
 
+## Specify additional locations of header files
 include_directories(
   include
   ${Boost_INCLUDE_DIRS}
@@ -31,6 +39,7 @@ add_library(${PROJECT_NAME} src/http_server.cpp
   src/http_reply.cpp src/http_request_handler.cpp
   src/websocket_connection.cpp src/websocket_request_handler.cpp
   src/websocket_message.cpp src/http_request.cpp)
+
 target_link_libraries(${PROJECT_NAME}
   ${OPENSSL_LIBRARIES}
   ${Boost_LIBRARIES}
@@ -40,7 +49,6 @@ target_link_libraries(${PROJECT_NAME}
 #############
 ## Install ##
 #############
-
 
 ## Mark executables and/or libraries for installation
 install(TARGETS ${PROJECT_NAME}
@@ -52,10 +60,5 @@ install(TARGETS ${PROJECT_NAME}
 ## Mark cpp header files for installation
 install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-  FILES_MATCHING PATTERN "*.hpp"
+  FILES_MATCHING PATTERN "*.hpp" PATTERN "*.h"
 )
-
-#############
-## Testing ##
-#############
-

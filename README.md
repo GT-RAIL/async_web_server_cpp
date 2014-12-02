@@ -1,7 +1,7 @@
 async_web_server_cpp [![Build Status](https://api.travis-ci.org/WPI-RAIL/async_web_server_cpp.png)](https://travis-ci.org/WPI-RAIL/async_web_server_cpp)
 ====================
 
-#### Asynchronous Web Server in C++
+#### Asynchronous Web/WebSocket Server in C++
 An implementation of an HTTP web server in C++ built on top of the [Boost.Asio Library](http://www.boost.org/doc/libs/1_57_0/doc/html/boost_asio.html).
 It also provides the ability to handle websocket upgrade requests.
 
