@@ -45,11 +45,13 @@ struct HttpReply
 
   static HttpServerRequestHandler from_file(HttpReply::status_type status,
       const std::string& content_type,
-      const std::string& filename);
+      const std::string& filename,
+      const std::vector<HttpHeader>& additional_headers = std::vector<HttpHeader>());
 
   static HttpServerRequestHandler static_reply(status_type status,
       const std::string& content_type,
-      const std::string& content);
+      const std::string& content,
+      const std::vector<HttpHeader>& additional_headers = std::vector<HttpHeader>());
 
   static ReplyBuilder builder(status_type status);
 };
