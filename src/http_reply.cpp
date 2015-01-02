@@ -253,20 +253,23 @@ HttpServerRequestHandler HttpReply::stock_reply(HttpReply::status_type status)
 
 HttpServerRequestHandler HttpReply::from_file(HttpReply::status_type status,
     const std::string& content_type,
-    const std::string& filename)
+    const std::string& filename,
+    const std::vector<HttpHeader>& additional_headers)
 {
   std::ifstream file_stream(filename.c_str());
   std::stringstream file_buffer;
   file_buffer << file_stream.rdbuf();
-  return static_reply(status, content_type, file_buffer.str());
+  return static_reply(status, content_type, file_buffer.str(), additional_headers);
 }
 HttpServerRequestHandler HttpReply::static_reply(HttpReply::status_type status,
     const std::string& content_type,
-    const std::string& content)
+    const std::string& content,
+    const std::vector<HttpHeader>& additional_headers)
 {
   std::vector<HttpHeader> headers;
   headers.push_back(HttpHeader("Content-Length", boost::lexical_cast<std::string>(content.size())));
   headers.push_back(HttpHeader("Content-Type", content_type));
+  std::copy(additional_headers.begin(), additional_headers.end(), headers.begin());
   return StaticHttpRequestHandler(status, headers, content);
 }
 
