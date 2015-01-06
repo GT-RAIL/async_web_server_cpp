@@ -2,6 +2,14 @@
 Changelog for package async_web_server_cpp
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.0.2 (2015-01-06)
+------------------
+* Merge pull request #3 from mitchellwills/develop
+  Added support for specifying additional headers when creating static request handlers
+* Added some comments to the HTTP reply methods
+* Added support for specifying additional headers when creating static request handlers
+* Contributors: Mitchell Wills, Russell Toris
+
 0.0.1 (2014-12-02)
 ------------------
 * OCD clenup
