@@ -246,21 +246,120 @@ std::vector<boost::asio::const_buffer> HttpReply::to_buffers(const std::vector<H
 }
 
 
-HttpServerRequestHandler HttpReply::stock_reply(HttpReply::status_type status)
-{
-  return static_reply(status, "text/html", stock_replies::to_string(status));
-}
-
 HttpServerRequestHandler HttpReply::from_file(HttpReply::status_type status,
     const std::string& content_type,
     const std::string& filename,
     const std::vector<HttpHeader>& additional_headers)
 {
+  std::vector<HttpHeader> headers;
+  headers.push_back(HttpHeader("Content-Type", content_type));
+  std::copy(additional_headers.begin(), additional_headers.end(), headers.begin());
+
+  return FileHttpRequestHandler(status, filename, headers);
+}
+FileHttpRequestHandler::FileHttpRequestHandler(HttpReply::status_type status,
+					       const std::string& filename,
+					       const std::vector<HttpHeader>& headers)
+  : status_(status), headers_(headers), filename_(filename)
+{
+}
+
+static bool serveFromFile(HttpReply::status_type status, const std::string& filename, const std::vector<HttpHeader>& headers, boost::shared_ptr<HttpConnection> connection) {
   std::ifstream file_stream(filename.c_str());
   std::stringstream file_buffer;
   file_buffer << file_stream.rdbuf();
-  return static_reply(status, content_type, file_buffer.str(), additional_headers);
+  std::string content = file_buffer.str();
+
+  ReplyBuilder reply_builder_(status);
+  reply_builder_.headers(headers);
+  reply_builder_.header("Content-Length", boost::lexical_cast<std::string>(content.size()));
+  reply_builder_.write(connection);
+  connection->write(content);
 }
+bool FileHttpRequestHandler::operator()(const HttpRequest &request, boost::shared_ptr<HttpConnection> connection, const char* begin, const char* end)
+{
+  serveFromFile(status_, filename_, headers_, connection);
+  return true;
+}
+
+
+HttpServerRequestHandler HttpReply::from_filesystem(HttpReply::status_type status,
+    const std::string& path_root,
+    const std::string& filesystem_root,
+    bool list_directories,
+    const std::vector<HttpHeader>& additional_headers)
+{
+  return FilesystemHttpRequestHandler(status, path_root, filesystem_root, list_directories, additional_headers);
+}
+FilesystemHttpRequestHandler::FilesystemHttpRequestHandler(HttpReply::status_type status,
+							   const std::string& path_root,
+							   const std::string& filesystem_root,
+							   bool list_directories,
+							   const std::vector<HttpHeader>& headers)
+  : status_(status), headers_(headers), path_root_(path_root), filesystem_root_(filesystem_root), list_directories_(list_directories)
+{
+}
+
+bool FilesystemHttpRequestHandler::operator()(const HttpRequest &request, boost::shared_ptr<HttpConnection> connection, const char* begin, const char* end)
+{
+  if(request.path.find(path_root_) == 0) { // request.path startswith path_root
+    std::string rel_path = request.path.substr(path_root_.length());
+    if(rel_path.find_first_of('/') == 0) { // remove leading slash to make path relative
+      rel_path = rel_path.substr(1);
+    }
+
+    boost::filesystem::path requested_path = filesystem_root_ / rel_path;
+
+    if(boost::filesystem::exists(requested_path)) {
+      if(boost::filesystem::is_directory(requested_path)) {
+	if(list_directories_) {
+	  std::stringstream content;
+	  content << "<html><body>";
+	  content << "<h1> Directory Listing: " << request.path << "</h1>";
+	  boost::filesystem::directory_iterator end_itr;
+	  for (boost::filesystem::directory_iterator itr(requested_path); itr != end_itr; ++itr) {
+	    if(boost::filesystem::is_directory(itr->status())) {
+	      content << "<a href=\"" << itr->path().leaf().generic_string() << "/\">";
+	      content << itr->path().leaf().generic_string() << "/";
+	      content << "</a>";
+	    }
+	    else if(boost::filesystem::is_regular_file(itr->status())) {
+	      content << "<a href=\"" << itr->path().leaf().generic_string() << "\">";
+	      content << itr->path().leaf().generic_string();
+	      content << "</a>";
+	    }
+	    content << "<br>";
+	  }
+	  content << "</body></html>";
+	  HttpReply::static_reply(HttpReply::ok, "text/html", content.str(), headers_)(request, connection, begin, end);
+	}
+	else {
+	  HttpReply::stock_reply(HttpReply::forbidden)(request, connection, begin, end);
+	}
+	return true;
+      }
+      else if(boost::filesystem::is_regular_file(requested_path)) {
+	serveFromFile(status_, requested_path.generic_string(), headers_, connection);
+	return true;
+      }
+      else {
+      }
+    }
+    else {
+      return false;
+    }
+  }
+  else {
+    return false;
+  }
+}
+
+
+HttpServerRequestHandler HttpReply::stock_reply(HttpReply::status_type status)
+{
+  return static_reply(status, "text/html", stock_replies::to_string(status));
+}
+
 HttpServerRequestHandler HttpReply::static_reply(HttpReply::status_type status,
     const std::string& content_type,
     const std::string& content,
@@ -282,10 +381,11 @@ StaticHttpRequestHandler::StaticHttpRequestHandler(HttpReply::status_type status
   reply_builder_.headers(headers);
 }
 
-void StaticHttpRequestHandler::operator()(const HttpRequest &request, boost::shared_ptr<HttpConnection> connection, const char* begin, const char* end)
+bool StaticHttpRequestHandler::operator()(const HttpRequest &request, boost::shared_ptr<HttpConnection> connection, const char* begin, const char* end)
 {
   reply_builder_.write(connection);
   connection->write(content_string_);
+  return true;
 }
 
 
