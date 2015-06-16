@@ -48,7 +48,6 @@ struct HttpReply
 
   /**
    * Create a request handler that sends the contents of a file
-   * NOTE: the file is only loaded once when the request handler is created
    */
   static HttpServerRequestHandler from_file(HttpReply::status_type status,
       const std::string& content_type,
@@ -118,6 +117,24 @@ public:
 private:
   ReplyBuilder reply_builder_;
   const std::string content_string_;
+};
+
+/**
+ *  Request Handler that serves a response from a file
+ */
+class FileHttpRequestHandler
+{
+public:
+  FileHttpRequestHandler(HttpReply::status_type status,
+			 const std::string& filename,
+			 const std::vector<HttpHeader>& headers);
+
+  void operator()(const HttpRequest &, boost::shared_ptr<HttpConnection>, const char* begin, const char* end);
+
+private:
+  HttpReply::status_type status_;
+  std::vector<HttpHeader> headers_;
+  std::string filename_;
 };
 
 }

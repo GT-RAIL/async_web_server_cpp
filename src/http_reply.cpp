@@ -246,21 +246,44 @@ std::vector<boost::asio::const_buffer> HttpReply::to_buffers(const std::vector<H
 }
 
 
-HttpServerRequestHandler HttpReply::stock_reply(HttpReply::status_type status)
-{
-  return static_reply(status, "text/html", stock_replies::to_string(status));
-}
-
 HttpServerRequestHandler HttpReply::from_file(HttpReply::status_type status,
     const std::string& content_type,
     const std::string& filename,
     const std::vector<HttpHeader>& additional_headers)
 {
-  std::ifstream file_stream(filename.c_str());
+  std::vector<HttpHeader> headers;
+  headers.push_back(HttpHeader("Content-Type", content_type));
+  std::copy(additional_headers.begin(), additional_headers.end(), headers.begin());
+
+  return FileHttpRequestHandler(status, filename, headers);
+}
+FileHttpRequestHandler::FileHttpRequestHandler(HttpReply::status_type status,
+					       const std::string& filename,
+					       const std::vector<HttpHeader>& headers)
+  : status_(status), headers_(headers), filename_(filename)
+{
+}
+
+void FileHttpRequestHandler::operator()(const HttpRequest &request, boost::shared_ptr<HttpConnection> connection, const char* begin, const char* end)
+{
+  std::ifstream file_stream(filename_.c_str());
   std::stringstream file_buffer;
   file_buffer << file_stream.rdbuf();
-  return static_reply(status, content_type, file_buffer.str(), additional_headers);
+  std::string content = file_buffer.str();
+
+  ReplyBuilder reply_builder_(status_);
+  reply_builder_.headers(headers_);
+  reply_builder_.header("Content-Length", boost::lexical_cast<std::string>(content.size()));
+  reply_builder_.write(connection);
+  connection->write(content);
 }
+
+
+HttpServerRequestHandler HttpReply::stock_reply(HttpReply::status_type status)
+{
+  return static_reply(status, "text/html", stock_replies::to_string(status));
+}
+
 HttpServerRequestHandler HttpReply::static_reply(HttpReply::status_type status,
     const std::string& content_type,
     const std::string& content,
