@@ -264,7 +264,7 @@ FileHttpRequestHandler::FileHttpRequestHandler(HttpReply::status_type status,
 {
 }
 
-void FileHttpRequestHandler::operator()(const HttpRequest &request, boost::shared_ptr<HttpConnection> connection, const char* begin, const char* end)
+bool FileHttpRequestHandler::operator()(const HttpRequest &request, boost::shared_ptr<HttpConnection> connection, const char* begin, const char* end)
 {
   std::ifstream file_stream(filename_.c_str());
   std::stringstream file_buffer;
@@ -276,6 +276,7 @@ void FileHttpRequestHandler::operator()(const HttpRequest &request, boost::share
   reply_builder_.header("Content-Length", boost::lexical_cast<std::string>(content.size()));
   reply_builder_.write(connection);
   connection->write(content);
+  return true;
 }
 
 
@@ -305,10 +306,11 @@ StaticHttpRequestHandler::StaticHttpRequestHandler(HttpReply::status_type status
   reply_builder_.headers(headers);
 }
 
-void StaticHttpRequestHandler::operator()(const HttpRequest &request, boost::shared_ptr<HttpConnection> connection, const char* begin, const char* end)
+bool StaticHttpRequestHandler::operator()(const HttpRequest &request, boost::shared_ptr<HttpConnection> connection, const char* begin, const char* end)
 {
   reply_builder_.write(connection);
   connection->write(content_string_);
+  return true;
 }
 
 

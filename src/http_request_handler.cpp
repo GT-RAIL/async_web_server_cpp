@@ -37,18 +37,18 @@ void HttpRequestHandlerGroup::addHandler(HandlerPredicate predicate, HttpServerR
 }
 
 
-void HttpRequestHandlerGroup::operator()(const HttpRequest &request, boost::shared_ptr<HttpConnection> connection, const char* begin, const char* end)
+bool HttpRequestHandlerGroup::operator()(const HttpRequest &request, boost::shared_ptr<HttpConnection> connection, const char* begin, const char* end)
 {
   for (int i = 0; i < handlers_.size(); ++i)
   {
     std::pair<HandlerPredicate, HttpServerRequestHandler> &handler = handlers_[i];
     if (handler.first(request))
     {
-      handler.second(request, connection, begin, end);
-      return;
+      if(handler.second(request, connection, begin, end))
+	return true;
     }
   }
-  default_handler_(request, connection, begin, end);
+  return default_handler_(request, connection, begin, end);
 }
 
 }

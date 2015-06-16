@@ -20,7 +20,7 @@ class WebsocketHttpRequestHandler
 {
 public:
   WebsocketHttpRequestHandler(WebsocketRequestHandler handler);
-  void operator()(const HttpRequest &request, boost::shared_ptr<HttpConnection> connection, const char* begin, const char* end);
+  bool operator()(const HttpRequest &request, boost::shared_ptr<HttpConnection> connection, const char* begin, const char* end);
 
   static const std::string KEY_MAGIC_STRING;
 private:

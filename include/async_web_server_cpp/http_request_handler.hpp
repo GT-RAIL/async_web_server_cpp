@@ -10,7 +10,13 @@ namespace async_web_server_cpp
 
 class HttpConnection;
 
-typedef boost::function<void(const HttpRequest &, boost::shared_ptr<HttpConnection>, const char* begin, const char* end)> HttpServerRequestHandler;
+/**
+ * A handler for requests
+ * Should return true if the request was successfuly handled
+ * Returning false will cause the next matching handler to be triggered
+ * If false is returned then nothing should be written to the connection
+ */
+typedef boost::function<bool(const HttpRequest &, boost::shared_ptr<HttpConnection>, const char* begin, const char* end)> HttpServerRequestHandler;
 
 /**
  * A hander that can dispatch to a request to different handlers depending on a
@@ -28,7 +34,7 @@ public:
 
   void addHandler(HandlerPredicate predicate, HttpServerRequestHandler handler);
 
-  void operator()(const HttpRequest &request, boost::shared_ptr<HttpConnection> connection, const char* begin, const char* end);
+  bool operator()(const HttpRequest &request, boost::shared_ptr<HttpConnection> connection, const char* begin, const char* end);
 
 private:
   HttpServerRequestHandler default_handler_;

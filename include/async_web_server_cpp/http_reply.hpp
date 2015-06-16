@@ -112,7 +112,7 @@ public:
                            const std::vector<HttpHeader> &headers,
                            const std::string &content);
 
-  void operator()(const HttpRequest &, boost::shared_ptr<HttpConnection>, const char* begin, const char* end);
+  bool operator()(const HttpRequest &, boost::shared_ptr<HttpConnection>, const char* begin, const char* end);
 
 private:
   ReplyBuilder reply_builder_;
@@ -129,7 +129,7 @@ public:
 			 const std::string& filename,
 			 const std::vector<HttpHeader>& headers);
 
-  void operator()(const HttpRequest &, boost::shared_ptr<HttpConnection>, const char* begin, const char* end);
+  bool operator()(const HttpRequest &, boost::shared_ptr<HttpConnection>, const char* begin, const char* end);
 
 private:
   HttpReply::status_type status_;
