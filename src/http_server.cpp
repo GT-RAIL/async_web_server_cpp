@@ -49,12 +49,15 @@ void HttpServer::handle_accept(const boost::system::error_code &e)
 
 void HttpServer::stop()
 {
-  acceptor_.cancel();
-  acceptor_.close();
+  if(acceptor_.is_open()) {
+    acceptor_.cancel();
+    acceptor_.close();
+  }
   io_service_.stop();
   // Wait for all threads in the pool to exit.
   for (std::size_t i = 0; i < threads_.size(); ++i)
     threads_[i]->join();
+  threads_.clear();
 }
 
 }
