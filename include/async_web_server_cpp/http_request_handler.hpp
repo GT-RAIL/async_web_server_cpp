@@ -41,6 +41,19 @@ private:
   std::vector<std::pair<HandlerPredicate, HttpServerRequestHandler> > handlers_;
 };
 
+class HttpRequestBodyCollector
+{
+public:
+  typedef boost::function<void(const HttpRequest &, boost::shared_ptr<HttpConnection>, const std::string& body)> Handler;
+
+  HttpRequestBodyCollector(Handler handler);
+
+  bool operator()(const HttpRequest &request, boost::shared_ptr<HttpConnection> connection, const char* begin, const char* end);
+
+private:
+  Handler handler_;
+};
+
 }
 
 #endif

@@ -18,6 +18,9 @@ HttpServer::HttpServer(const std::string &address, const std::string &port,
   acceptor_.listen();
 }
 
+HttpServer::~HttpServer() {
+  stop();
+}
 
 void HttpServer::run()
 {

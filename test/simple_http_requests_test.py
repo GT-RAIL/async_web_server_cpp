@@ -3,6 +3,10 @@
 import httplib
 import rospy
 import unittest
+import subprocess
+import signal
+import time
+from catkin.find_in_workspaces import find_in_workspaces
 
 class TestSimpleHttpRequests(unittest.TestCase):
     def setUp(self):
@@ -43,8 +47,29 @@ class TestSimpleHttpRequests(unittest.TestCase):
         response = self.conn.getresponse()
         self.assertEqual(404, response.status)
 
+    def test_default_action(self):
+        self.conn.request("GET", "/a_static_response")
+        response = self.conn.getresponse()
+        self.assertEqual(200, response.status)
+        self.assertEqual("A RESPONSE", response.read())
+
+    def test_http_echo1(self):
+        test_content = "hello HELLO"*1000 # make sure to exceed MTU
+        self.conn.request("GET", "/http_body_echo", test_content)
+        response = self.conn.getresponse()
+        self.assertEqual(200, response.status)
+        self.assertEqual(test_content, response.read())
+
+    def test_http_echo2(self):
+        test_content = "THIS is A test"*1000 # make sure to exceed MTU
+        self.conn.request("POST", "/http_body_echo", test_content)
+        response = self.conn.getresponse()
+        self.assertEqual(200, response.status)
+        self.assertEqual(test_content, response.read())
 
 if __name__ == '__main__':
+    time.sleep(1) # ensure server is up
+
     import rostest
     rospy.init_node('simple_http_requests_test')
     rostest.rosrun('async_web_server_cpp', 'simple_http_requests', TestSimpleHttpRequests)
