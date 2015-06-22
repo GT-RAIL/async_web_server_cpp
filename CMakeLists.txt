@@ -62,3 +62,10 @@ install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
   FILES_MATCHING PATTERN "*.hpp" PATTERN "*.h"
 )
+
+
+if(CATKIN_ENABLE_TESTING)
+  find_package(catkin REQUIRED rospy)
+  find_package(rostest)
+  add_subdirectory(test)
+endif()
