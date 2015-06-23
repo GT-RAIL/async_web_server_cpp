@@ -28,6 +28,6 @@ script:
   - catkin_make
   - catkin_make tests
   - source devel/setup.bash
-  - rostest async_web_server_cpp simple_http_requests.launch
+  - rostest async_web_server_cpp tests.test
   - catkin_make install
   - source install/setup.bash

@@ -3,10 +3,7 @@
 import httplib
 import rospy
 import unittest
-import subprocess
-import signal
 import time
-from catkin.find_in_workspaces import find_in_workspaces
 
 class TestSimpleHttpRequests(unittest.TestCase):
     def setUp(self):

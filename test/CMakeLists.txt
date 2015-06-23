@@ -7,4 +7,4 @@ if(TARGET tests)
     )
 endif()
 
-add_rostest(simple_http_requests.launch)
+add_rostest(tests.test)

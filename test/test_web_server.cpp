@@ -1,5 +1,7 @@
 #include "async_web_server_cpp/http_server.hpp"
 #include "async_web_server_cpp/http_reply.hpp"
+#include "async_web_server_cpp/websocket_connection.hpp"
+#include "async_web_server_cpp/websocket_request_handler.hpp"
 #include <signal.h>
 
 using namespace async_web_server_cpp;
@@ -35,6 +37,22 @@ static bool http_query_echo(const async_web_server_cpp::HttpRequest &request,
   return true;
 }
 
+class WebsocketEchoer {
+public:
+  WebsocketEchoer(WebsocketConnectionPtr websocket) : websocket_(websocket) {}
+  void operator()(const WebsocketMessage& message) {
+    websocket_->sendMessage(message);
+  }
+private:
+  WebsocketConnectionPtr websocket_;
+};
+WebsocketConnection::MessageHandler websocket_echo(const HttpRequest& request, WebsocketConnectionPtr websocket)
+{
+  return WebsocketEchoer(websocket);
+}
+
+
+
 int main(int argc, char **argv)
 {
   if (signal(SIGINT, sig_handler) == SIG_ERR) {
@@ -57,6 +75,8 @@ int main(int argc, char **argv)
   handler_group.addHandlerForPath("/http_body_echo", HttpRequestBodyCollector(http_body_echo));
   handler_group.addHandlerForPath("/http_path_echo.*", http_path_echo);
   handler_group.addHandlerForPath("/http_query_echo", http_query_echo);
+
+  handler_group.addHandlerForPath("/websocket_echo", WebsocketHttpRequestHandler(websocket_echo));
 
   HttpServer server("0.0.0.0", "9849", handler_group, 1);
 
