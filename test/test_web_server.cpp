@@ -16,6 +16,25 @@ static void http_body_echo(const async_web_server_cpp::HttpRequest &request,
   connection->write(body);
 }
 
+static bool http_path_echo(const async_web_server_cpp::HttpRequest &request,
+		      async_web_server_cpp::HttpConnectionPtr connection, const char* begin, const char* end)
+{
+  HttpReply::builder(HttpReply::ok).write(connection);
+  connection->write(request.path);
+  return true;
+}
+
+static bool http_query_echo(const async_web_server_cpp::HttpRequest &request,
+		      async_web_server_cpp::HttpConnectionPtr connection, const char* begin, const char* end)
+{
+  HttpReply::builder(HttpReply::ok).write(connection);
+  for(std::map<std::string,std::string>::const_iterator itr = request.query_params.begin();
+      itr != request.query_params.end(); ++ itr) {
+    connection->write(itr->first + "=" + itr->second + "\n");
+  }
+  return true;
+}
+
 int main(int argc, char **argv)
 {
   if (signal(SIGINT, sig_handler) == SIG_ERR) {
@@ -36,6 +55,8 @@ int main(int argc, char **argv)
 										"text/example",
 										"A RESPONSE"));
   handler_group.addHandlerForPath("/http_body_echo", HttpRequestBodyCollector(http_body_echo));
+  handler_group.addHandlerForPath("/http_path_echo.*", http_path_echo);
+  handler_group.addHandlerForPath("/http_query_echo", http_query_echo);
 
   HttpServer server("0.0.0.0", "9849", handler_group, 1);
 

@@ -67,6 +67,18 @@ class TestSimpleHttpRequests(unittest.TestCase):
         self.assertEqual(200, response.status)
         self.assertEqual(test_content, response.read())
 
+    def test_http_path_echo(self):
+        self.conn.request("GET", "/http_path_echo/this_is_a_test")
+        response = self.conn.getresponse()
+        self.assertEqual(200, response.status)
+        self.assertEqual("/http_path_echo/this_is_a_test", response.read())
+
+    def test_http_query_echo(self):
+        self.conn.request("GET", "/http_query_echo?hello=1&b=test&c=10")
+        response = self.conn.getresponse()
+        self.assertEqual(200, response.status)
+        self.assertEqual("b=test\nc=10\nhello=1\n", response.read())
+
 if __name__ == '__main__':
     time.sleep(1) # ensure server is up
 
