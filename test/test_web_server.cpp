@@ -3,6 +3,7 @@
 #include "async_web_server_cpp/websocket_connection.hpp"
 #include "async_web_server_cpp/websocket_request_handler.hpp"
 #include <signal.h>
+#include <ros/package.h>
 
 using namespace async_web_server_cpp;
 
@@ -77,6 +78,15 @@ int main(int argc, char **argv)
   handler_group.addHandlerForPath("/http_query_echo", http_query_echo);
 
   handler_group.addHandlerForPath("/websocket_echo", WebsocketHttpRequestHandler(websocket_echo));
+
+  handler_group.addHandlerForPath("/test_files/.+", HttpReply::from_filesystem(HttpReply::ok,
+									       "/test_files/", ros::package::getPath("async_web_server_cpp") + "/test",
+										false));
+  handler_group.addHandlerForPath("/test_files_with_dir/.+", HttpReply::from_filesystem(HttpReply::ok,
+											"/test_files_with_dir/", ros::package::getPath("async_web_server_cpp") + "/test",
+											true));
+  handler_group.addHandlerForPath("/test_file", HttpReply::from_file(HttpReply::ok, "text/html",
+								     ros::package::getPath("async_web_server_cpp") + "/test/test.html"));
 
   HttpServer server("0.0.0.0", "9849", handler_group, 1);
 

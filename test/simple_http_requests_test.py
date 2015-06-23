@@ -76,6 +76,33 @@ class TestSimpleHttpRequests(unittest.TestCase):
         self.assertEqual(200, response.status)
         self.assertEqual("b=test\nc=10\nhello=1\n", response.read())
 
+    def test_file(self):
+        self.conn.request("GET", "/test_file")
+        response = self.conn.getresponse()
+        self.assertEqual(200, response.status)
+        self.assertEqual("<html></html>\n", response.read())
+
+    def test_file_from_filesystem(self):
+        self.conn.request("GET", "/test_files/test_dir/test_file.txt")
+        response = self.conn.getresponse()
+        self.assertEqual(200, response.status)
+        self.assertEqual("test\n", response.read())
+
+    def test_directory_listing_forbidden_from_filesystem1(self):
+        self.conn.request("GET", "/test_files/test_dir/")
+        response = self.conn.getresponse()
+        self.assertEqual(403, response.status)
+
+    def test_directory_listing_forbidden_from_filesystem2(self):
+        self.conn.request("GET", "/test_files/test_dir")
+        response = self.conn.getresponse()
+        self.assertEqual(403, response.status)
+
+    def test_directory_listing_from_filesystem(self):
+        self.conn.request("GET", "/test_files_with_dir/test_dir/")
+        response = self.conn.getresponse()
+        self.assertEqual(200, response.status)
+
 if __name__ == '__main__':
     time.sleep(1) # ensure server is up
 

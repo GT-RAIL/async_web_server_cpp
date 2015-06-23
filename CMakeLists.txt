@@ -65,7 +65,7 @@ install(DIRECTORY include/${PROJECT_NAME}/
 
 
 if(CATKIN_ENABLE_TESTING)
-  find_package(catkin REQUIRED rospy)
+  find_package(catkin REQUIRED rospy roslib)
   find_package(rostest)
   add_subdirectory(test)
 endif()

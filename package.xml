@@ -22,5 +22,6 @@
 
   <test_depend>rostest</test_depend>
   <test_depend>rospy</test_depend>
+  <test_depend>roslib</test_depend>
   <run_depend>python-websocket</run_depend>
 </package>
