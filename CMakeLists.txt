@@ -7,7 +7,7 @@ project(async_web_server_cpp)
 find_package(catkin REQUIRED)
 
 ## System dependencies are found with CMake's conventions
-find_package(Boost REQUIRED COMPONENTS thread system regex)
+find_package(Boost REQUIRED COMPONENTS thread system regex filesystem)
 find_package(OpenSSL)
 
 ###################################################
@@ -62,3 +62,10 @@ install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
   FILES_MATCHING PATTERN "*.hpp" PATTERN "*.h"
 )
+
+
+if(CATKIN_ENABLE_TESTING)
+  find_package(catkin REQUIRED rospy roslib)
+  find_package(rostest)
+  add_subdirectory(test)
+endif()

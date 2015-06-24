@@ -26,6 +26,7 @@ class HttpServer : private boost::noncopyable
 public:
   HttpServer(const std::string &address, const std::string &port,
              HttpServerRequestHandler request_handler, std::size_t thread_pool_size);
+  ~HttpServer();
 
   void run();
 
