@@ -6,4 +6,4 @@ Original Authors
 Contributors
 ------------
 
- * [Russell Toris](http://users.wpi.edu/~rctoris/) (rctoris@wpi.edu)
+ * [Russell Toris](https://github.com/rctoris/) (russell.toris@gmail.com)
