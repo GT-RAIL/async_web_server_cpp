@@ -1,4 +1,4 @@
-<package>
+<package format="2">
   <name>async_web_server_cpp</name>
   <version>0.0.3</version>
   <description>Asynchronous Web/WebSocket Server in C++</description>
@@ -17,11 +17,11 @@
   <build_depend>libssl-dev</build_depend>
   <build_depend>boost</build_depend>
 
-  <run_depend>libssl-dev</run_depend>
-  <run_depend>boost</run_depend>
+  <exec_depend>libssl-dev</exec_depend>
+  <exec_depend>boost</exec_depend>
 
   <test_depend>rostest</test_depend>
   <test_depend>rospy</test_depend>
   <test_depend>roslib</test_depend>
-  <run_depend>python-websocket</run_depend>
+  <test_depend>python-websocket</test_depend>
 </package>
