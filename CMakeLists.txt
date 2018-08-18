@@ -1,10 +1,7 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.5)
 project(async_web_server_cpp)
 
-## Find catkin macros and libraries
-## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
-## is used, also find other catkin packages
-find_package(catkin REQUIRED)
+find_package(ament_cmake REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 find_package(Boost REQUIRED COMPONENTS thread system regex filesystem)
@@ -13,15 +10,6 @@ find_package(OpenSSL)
 ###################################################
 ## Declare things to be passed to other projects ##
 ###################################################
-
-## LIBRARIES: libraries you create in this project that dependent projects also need
-## CATKIN_DEPENDS: catkin_packages dependent projects also need
-## DEPENDS: system dependencies of this project that dependent projects also need
-catkin_package(
- INCLUDE_DIRS include
- LIBRARIES ${PROJECT_NAME}
- DEPENDS Boost OpenSSL
-)
 
 ###########
 ## Build ##
@@ -43,8 +31,13 @@ add_library(${PROJECT_NAME} src/http_server.cpp
 target_link_libraries(${PROJECT_NAME}
   ${OPENSSL_LIBRARIES}
   ${Boost_LIBRARIES}
-  ${catkin_LIBRARIES}
 )
+
+ament_export_dependencies(OpenSSL)
+ament_export_include_directories(include ${Boost_INCLUDE_DIRS})
+ament_export_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
+
+ament_package()
 
 #############
 ## Install ##
@@ -52,20 +45,21 @@ target_link_libraries(${PROJECT_NAME}
 
 ## Mark executables and/or libraries for installation
 install(TARGETS ${PROJECT_NAME}
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
 )
 
 ## Mark cpp header files for installation
 install(DIRECTORY include/${PROJECT_NAME}/
-  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+  DESTINATION include/${PROJECT_NAME}
   FILES_MATCHING PATTERN "*.hpp" PATTERN "*.h"
 )
 
 
-if(CATKIN_ENABLE_TESTING)
-  find_package(catkin REQUIRED rospy roslib)
-  find_package(rostest)
-  add_subdirectory(test)
+if(BUILD_TESTING)
+  # TODO reenable tests
+  # find_package(catkin REQUIRED rospy roslib)
+  # find_package(rostest)
+  # add_subdirectory(test)
 endif()
