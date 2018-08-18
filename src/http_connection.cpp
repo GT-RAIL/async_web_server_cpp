@@ -81,14 +81,14 @@ void HttpConnection::async_read(ReadHandler callback)
 
 void HttpConnection::write_and_clear(std::vector<unsigned char> &data)
 {
-  boost::shared_ptr<std::vector<unsigned char> > buffer(new std::vector<unsigned char>());
+  std::shared_ptr<std::vector<unsigned char> > buffer(new std::vector<unsigned char>());
   buffer->swap(data);
   write(boost::asio::buffer(*buffer), buffer);
 }
 
 void HttpConnection::write(const std::string &content)
 {
-  boost::shared_ptr<std::string> str(new std::string(content));
+  std::shared_ptr<std::string> str(new std::string(content));
   write(boost::asio::buffer(*str), str);
 }
 
