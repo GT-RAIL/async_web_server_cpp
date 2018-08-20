@@ -7,6 +7,10 @@ find_package(ament_cmake_ros REQUIRED)
 find_package(Boost REQUIRED COMPONENTS thread system regex filesystem)
 find_package(OpenSSL)
 
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 14)
+endif()
+
 ###################################################
 ## Declare things to be passed to other projects ##
 ###################################################
