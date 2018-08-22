@@ -1,13 +1,15 @@
-#! /usr/bin/env python
+#!/usr/bin/env python3
+
+import time
+import unittest
 
 import websocket
-import rospy
-import unittest
-import time
+
 
 class TestWebsocket(unittest.TestCase):
     def setUp(self):
-        self.ws = websocket.create_connection("ws://localhost:9849/websocket_echo")
+        self.ws = websocket.create_connection(
+            "ws://localhost:9849/websocket_echo")
 
     def tearDown(self):
         self.ws.close()
@@ -23,16 +25,15 @@ class TestWebsocket(unittest.TestCase):
         self.ws.ping("test ping")
         ping_echo = self.ws.recv_frame()
         self.assertEqual(9, ping_echo.opcode)
-        self.assertEqual("test ping", ping_echo.data)
+        self.assertEqual(b"test ping", ping_echo.data)
 
         self.ws.pong("test pong")
         pong_echo = self.ws.recv_frame()
         self.assertEqual(10, pong_echo.opcode)
-        self.assertEqual("test pong", pong_echo.data)
+        self.assertEqual(b"test pong", pong_echo.data)
+
 
 if __name__ == '__main__':
-    time.sleep(1) # ensure server is up
+    time.sleep(1)  # ensure server is up
 
-    import rostest
-    rospy.init_node('websocket_test')
-    rostest.rosrun('async_web_server_cpp', 'websocket', TestWebsocket)
+    unittest.main()

@@ -62,8 +62,5 @@ install(DIRECTORY include/${PROJECT_NAME}/
 
 
 if(BUILD_TESTING)
-  # TODO reenable tests
-  # find_package(catkin REQUIRED rospy roslib)
-  # find_package(rostest)
-  # add_subdirectory(test)
+  add_subdirectory(test)
 endif()
