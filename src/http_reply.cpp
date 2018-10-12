@@ -275,11 +275,11 @@ static bool serveFromFile(HttpReply::status_type status, const std::string& file
   reply_builder_.header("Content-Length", boost::lexical_cast<std::string>(content.size()));
   reply_builder_.write(connection);
   connection->write(content);
+  return true;
 }
 bool FileHttpRequestHandler::operator()(const HttpRequest &request, boost::shared_ptr<HttpConnection> connection, const char* begin, const char* end)
 {
-  serveFromFile(status_, filename_, headers_, connection);
-  return true;
+  return serveFromFile(status_, filename_, headers_, connection);
 }
 
 
