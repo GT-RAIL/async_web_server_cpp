@@ -1,4 +1,5 @@
 #include <boost/regex.hpp>
+#include <boost/algorithm/string.hpp>
 #include <openssl/sha.h>
 #include <openssl/hmac.h>
 #include <openssl/evp.h>
@@ -23,7 +24,8 @@ bool WebsocketHttpRequestHandler::operator()(const HttpRequest &request, boost::
   std::string upgrade_header = request.get_header_value_or_default("Upgrade", "");
   std::string websocket_key = request.get_header_value_or_default("Sec-WebSocket-Key", "");
 
-  if (connection_header.find("Upgrade") != std::string::npos && upgrade_header.compare("websocket") == 0
+  if (connection_header.find("Upgrade") != std::string::npos
+      && boost::iequals(upgrade_header, "websocket")
       && websocket_key.size() > 0)
   {
     std::string concat_key = websocket_key + KEY_MAGIC_STRING;
