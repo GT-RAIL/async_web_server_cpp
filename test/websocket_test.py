@@ -1,15 +1,12 @@
 #!/usr/bin/env python3
 
-import time
-import unittest
-
 import websocket
-
+import unittest
+import time
 
 class TestWebsocket(unittest.TestCase):
     def setUp(self):
-        self.ws = websocket.create_connection(
-            "ws://localhost:9849/websocket_echo")
+        self.ws = websocket.create_connection("ws://localhost:9849/websocket_echo")
 
     def tearDown(self):
         self.ws.close()
@@ -32,8 +29,7 @@ class TestWebsocket(unittest.TestCase):
         self.assertEqual(10, pong_echo.opcode)
         self.assertEqual(b"test pong", pong_echo.data)
 
-
 if __name__ == '__main__':
-    time.sleep(1)  # ensure server is up
+    time.sleep(1) # ensure server is up
 
     unittest.main()
