@@ -44,7 +44,7 @@ class TestSimpleHttpRequests(unittest.TestCase):
         response = self.conn.getresponse()
         self.assertEqual(404, response.status)
 
-    def test_default_action(self):
+    def test_default_action2(self):
         self.conn.request("GET", "/a_static_response")
         response = self.conn.getresponse()
         self.assertEqual(200, response.status)
