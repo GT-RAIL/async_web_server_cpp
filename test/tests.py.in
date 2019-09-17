@@ -7,7 +7,7 @@ from launch import LaunchDescription
 from launch import LaunchService
 from launch.actions import ExecuteProcess
 
-from launch_testing import LaunchTestService
+from launch_testing.legacy import LaunchTestService
 
 
 def main(argv=sys.argv[1:]):
@@ -25,7 +25,6 @@ def main(argv=sys.argv[1:]):
             os.path.join(test_directory, 'simple_http_requests_test.py')],
         name='simple_http_requests_test',
     )
-    ld.add_action(test1_action)
 
     test2_action = ExecuteProcess(
         cmd=[
@@ -33,7 +32,6 @@ def main(argv=sys.argv[1:]):
             os.path.join(test_directory, 'websocket_test.py')],
         name='websocket_test',
     )
-    ld.add_action(test2_action)
 
     lts = LaunchTestService()
     lts.add_test_action(ld, test1_action)
