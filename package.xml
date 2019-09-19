@@ -12,7 +12,7 @@
   <url type="bugtracker">https://github.com/GT-RAIL/async_web_server_cpp/issues</url>
   <url type="repository">https://github.com/GT-RAIL/async_web_server_cpp</url>
 
-  <buildtool_depend>catkin</buildtool_depend>
+  <buildtool_depend>ament_cmake_ros</buildtool_depend>
 
   <build_depend>libssl-dev</build_depend>
   <build_depend>boost</build_depend>
@@ -20,8 +20,6 @@
   <exec_depend>libssl-dev</exec_depend>
   <exec_depend>boost</exec_depend>
 
-  <test_depend>rostest</test_depend>
-  <test_depend>rospy</test_depend>
-  <test_depend>roslib</test_depend>
-  <test_depend>python-websocket</test_depend>
+  <test_depend>launch_testing</test_depend>
+  <test_depend>python3-websocket</test_depend>
 </package>
