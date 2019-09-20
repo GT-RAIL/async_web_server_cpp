@@ -1,6 +1,6 @@
 <package format="2">
   <name>async_web_server_cpp</name>
-  <version>0.0.3</version>
+  <version>1.0.0</version>
   <description>Asynchronous Web/WebSocket Server in C++</description>
 
   <maintainer email="russell.toris@gmail.com">Russell Toris</maintainer>

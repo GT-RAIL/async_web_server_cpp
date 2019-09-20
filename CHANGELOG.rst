@@ -2,8 +2,8 @@
 Changelog for package async_web_server_cpp
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming release
--------------------
+1.0.0 (2019-09-19)
+------------------
 * Port to ROS 2
 
 0.0.3 (2015-08-18)
