@@ -23,7 +23,7 @@ bool HttpRequest::parse_uri()
       BOOST_FOREACH(const std::string & pair_string, pair_strings)
       {
         std::vector<std::string> pair_data;
-        const int eq_index = pair_string.find_first_of('=');
+        const size_t eq_index = pair_string.find_first_of('=');
         if (eq_index == std::string::npos)
         {
           if (pair_string.size() > 0)

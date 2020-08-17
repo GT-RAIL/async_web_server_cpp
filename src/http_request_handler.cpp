@@ -45,7 +45,7 @@ void HttpRequestHandlerGroup::addHandler(HandlerPredicate predicate, HttpServerR
 
 bool HttpRequestHandlerGroup::operator()(const HttpRequest &request, boost::shared_ptr<HttpConnection> connection, const char* begin, const char* end)
 {
-  for (int i = 0; i < handlers_.size(); ++i)
+  for (size_t i = 0; i < handlers_.size(); ++i)
   {
     std::pair<HandlerPredicate, HttpServerRequestHandler> &handler = handlers_[i];
     if (handler.first(request))
@@ -87,7 +87,7 @@ public:
     std::string chunk(begin, end-begin);
     body_stream_ << chunk;
     received_length_ += chunk.length();
-    if(received_length_ >= length_) {
+    if(received_length_ >= size_t(length_)) {
       handler_(request_, connection_, body_stream_.str().substr(0, length_));
     }
     else {
