@@ -134,6 +134,7 @@ void HttpConnection::write_pending()
 void HttpConnection::handle_write(const boost::system::error_code &e,
                                   std::vector<ResourcePtr> resources)
 {
+  (void) resources;
   boost::mutex::scoped_lock lock(write_mutex_);
   write_in_progress_ = false;
   if (!e)
