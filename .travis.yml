@@ -1,37 +1,23 @@
-sudo: required
-dist: trusty
+os: linux
+dist: bionic
 language: generic
-compiler:
-  - gcc
+services:
+  - docker
 env:
-  global:
-    - CATKIN_WS=~/catkin_ws
-    - CATKIN_WS_SRC=${CATKIN_WS}/src
   matrix:
-    - CI_ROS_DISTRO="indigo"
-    - CI_ROS_DISTRO="jade"
-
-branches:
-  only:
-    - master
-    - develop
+    - CI_ROS_DISTRO="kinetic"
+    - CI_ROS_DISTRO="melodic"
+    - CI_ROS_DISTRO="noetic"
 
 install:
-  - sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu trusty main" > /etc/apt/sources.list.d/ros-latest.list'
-  - wget http://packages.ros.org/ros.key -O - | sudo apt-key add -
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq -y python-rosdep python-catkin-tools
-  - sudo rosdep init
-  - rosdep update
-  - rosdep install --from-paths ./ -i -y --rosdistro $CI_ROS_DISTRO
+  - docker pull ros:${CI_ROS_DISTRO}-ros-core
+  - docker run --name ci_runner -i -d --rm -v $(pwd):/catkin_ws/src ros:${CI_ROS_DISTRO}-ros-core
+  - if [ "${CI_ROS_DISTRO}" == "noetic" ]; then docker exec ci_runner /bin/bash -c "apt update; apt install -y python3-rosdep python3-catkin-tools python3-osrf-pycommon"; fi
+  - if [ "${CI_ROS_DISTRO}" != "noetic" ]; then docker exec ci_runner /bin/bash -c "apt update; apt install -y python-rosdep python-catkin-tools"; fi
+  - docker exec ci_runner /bin/bash -c "source ./ros_entrypoint.sh; rosdep init; rosdep update; rosdep install --from-paths /catkin_ws/src --ignore-src -y"
 
 script:
-  - source /opt/ros/$CI_ROS_DISTRO/setup.bash
-  - mkdir -p $CATKIN_WS_SRC
-  - ln -s $TRAVIS_BUILD_DIR $CATKIN_WS_SRC
-  - cd $CATKIN_WS
-  - catkin init
-  - catkin config --install
-  - catkin build --limit-status-rate 0.1 --no-notify -DCMAKE_BUILD_TYPE=Release
-  - catkin build --limit-status-rate 0.1 --no-notify --make-args tests
-  - catkin run_tests
+  - docker exec ci_runner /bin/bash -c "source ./ros_entrypoint.sh; cd /catkin_ws; catkin init; catkin config --install"
+  - docker exec ci_runner /bin/bash -c "source ./ros_entrypoint.sh; cd /catkin_ws; catkin build --limit-status-rate 0.1 --no-notify -DCMAKE_BUILD_TYPE=Release"
+  - docker exec ci_runner /bin/bash -c "source ./ros_entrypoint.sh; cd /catkin_ws; catkin build --limit-status-rate 0.1 --no-notify --make-args tests"
+  - docker exec ci_runner /bin/bash -c "source ./ros_entrypoint.sh; cd /catkin_ws; catkin run_tests"
