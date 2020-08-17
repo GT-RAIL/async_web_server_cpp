@@ -12,8 +12,9 @@ env:
 install:
   - docker pull ros:${CI_ROS_DISTRO}-ros-core
   - docker run --name ci_runner -i -d --rm -v $(pwd):/catkin_ws/src ros:${CI_ROS_DISTRO}-ros-core
-  - if [ "${CI_ROS_DISTRO}" == "noetic" ]; then docker exec ci_runner /bin/bash -c "apt update; apt install -y python3-rosdep python3-catkin-tools python3-osrf-pycommon"; fi
-  - if [ "${CI_ROS_DISTRO}" != "noetic" ]; then docker exec ci_runner /bin/bash -c "apt update; apt install -y python-rosdep python-catkin-tools"; fi
+  - docker exec ci_runner /bin/bash -c "apt update; apt install -y build-essential"
+  - if [ "${CI_ROS_DISTRO}" == "noetic" ]; then docker exec ci_runner /bin/bash -c "apt install -y python3-rosdep python3-catkin-tools python3-osrf-pycommon"; fi
+  - if [ "${CI_ROS_DISTRO}" != "noetic" ]; then docker exec ci_runner /bin/bash -c "apt install -y python-rosdep python-catkin-tools"; fi
   - docker exec ci_runner /bin/bash -c "source ./ros_entrypoint.sh; rosdep init; rosdep update; rosdep install --from-paths /catkin_ws/src --ignore-src -y"
 
 script:
