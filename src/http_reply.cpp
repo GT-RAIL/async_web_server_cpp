@@ -350,8 +350,8 @@ bool FilesystemHttpRequestHandler::operator()(const HttpRequest &request, boost:
     }
   }
   else {
-    return false;
-  }
+  return false;
+}
 }
 
 
