@@ -1,6 +1,10 @@
 #! /usr/bin/env python
 
-import httplib
+import sys
+if sys.version_info > (3,):
+    import http.client as httplib
+else:
+    import httplib
 import rospy
 import unittest
 import time
@@ -48,17 +52,17 @@ class TestSimpleHttpRequests(unittest.TestCase):
         self.conn.request("GET", "/a_static_response")
         response = self.conn.getresponse()
         self.assertEqual(200, response.status)
-        self.assertEqual("A RESPONSE", response.read())
+        self.assertEqual(b"A RESPONSE", response.read())
 
     def test_http_echo1(self):
-        test_content = "hello HELLO"*1000 # make sure to exceed MTU
+        test_content = b"hello HELLO"*1000 # make sure to exceed MTU
         self.conn.request("GET", "/http_body_echo", test_content)
         response = self.conn.getresponse()
         self.assertEqual(200, response.status)
         self.assertEqual(test_content, response.read())
 
     def test_http_echo2(self):
-        test_content = "THIS is A test"*1000 # make sure to exceed MTU
+        test_content = b"THIS is A test"*1000 # make sure to exceed MTU
         self.conn.request("POST", "/http_body_echo", test_content)
         response = self.conn.getresponse()
         self.assertEqual(200, response.status)
@@ -68,25 +72,25 @@ class TestSimpleHttpRequests(unittest.TestCase):
         self.conn.request("GET", "/http_path_echo/this_is_a_test")
         response = self.conn.getresponse()
         self.assertEqual(200, response.status)
-        self.assertEqual("/http_path_echo/this_is_a_test", response.read())
+        self.assertEqual(b"/http_path_echo/this_is_a_test", response.read())
 
     def test_http_query_echo(self):
         self.conn.request("GET", "/http_query_echo?hello=1&b=test&c=10")
         response = self.conn.getresponse()
         self.assertEqual(200, response.status)
-        self.assertEqual("b=test\nc=10\nhello=1\n", response.read())
+        self.assertEqual(b"b=test\nc=10\nhello=1\n", response.read())
 
     def test_file(self):
         self.conn.request("GET", "/test_file")
         response = self.conn.getresponse()
         self.assertEqual(200, response.status)
-        self.assertEqual("<html></html>\n", response.read())
+        self.assertEqual(b"<html></html>\n", response.read())
 
     def test_file_from_filesystem(self):
         self.conn.request("GET", "/test_files/test_dir/test_file.txt")
         response = self.conn.getresponse()
         self.assertEqual(200, response.status)
-        self.assertEqual("test\n", response.read())
+        self.assertEqual(b"test\n", response.read())
 
     def test_directory_listing_forbidden_from_filesystem1(self):
         self.conn.request("GET", "/test_files/test_dir/")

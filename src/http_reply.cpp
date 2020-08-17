@@ -279,6 +279,9 @@ static bool serveFromFile(HttpReply::status_type status, const std::string& file
 }
 bool FileHttpRequestHandler::operator()(const HttpRequest &request, boost::shared_ptr<HttpConnection> connection, const char* begin, const char* end)
 {
+  (void) request;
+  (void) begin;
+  (void) end;
   return serveFromFile(status_, filename_, headers_, connection);
 }
 
@@ -349,9 +352,7 @@ bool FilesystemHttpRequestHandler::operator()(const HttpRequest &request, boost:
       return false;
     }
   }
-  else {
-    return false;
-  }
+  return false;
 }
 
 
@@ -383,6 +384,9 @@ StaticHttpRequestHandler::StaticHttpRequestHandler(HttpReply::status_type status
 
 bool StaticHttpRequestHandler::operator()(const HttpRequest &request, boost::shared_ptr<HttpConnection> connection, const char* begin, const char* end)
 {
+  (void) request;
+  (void) begin;
+  (void) end;
   reply_builder_.write(connection);
   connection->write(content_string_);
   return true;

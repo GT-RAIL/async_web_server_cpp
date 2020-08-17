@@ -194,7 +194,7 @@ boost::tribool WebsocketFrameParser::consume(WebsocketFrame& frame, char input)
     //unmask the frame
     if (frame.header.mask)
     {
-      for (int i = 0; i < frame.length; ++i)
+      for (uint64_t i = 0; i < frame.length; ++i)
       {
         frame.content[i] = frame.content[i] ^ frame.mask[i % 4];
       }

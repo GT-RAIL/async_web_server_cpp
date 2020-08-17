@@ -1,4 +1,4 @@
-<package format="2">
+<package format="3">
   <name>async_web_server_cpp</name>
   <version>0.0.3</version>
   <description>Asynchronous Web/WebSocket Server in C++</description>
@@ -23,5 +23,6 @@
   <test_depend>rostest</test_depend>
   <test_depend>rospy</test_depend>
   <test_depend>roslib</test_depend>
-  <test_depend>python-websocket</test_depend>
+  <test_depend condition="$ROS_PYTHON_VERSION==2">python-websocket</test_depend>
+  <test_depend condition="$ROS_PYTHON_VERSION==3">python3-websocket</test_depend>
 </package>
